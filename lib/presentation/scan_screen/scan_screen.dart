@@ -1,70 +1,46 @@
 import 'dart:io';
-import 'package:flutter/services.dart';
 import 'controller/scan_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:grabbitapp/core/app_export.dart';
 import 'package:image_picker/image_picker.dart';
 
-class Scanscreen extends StatefulWidget {
-  const Scanscreen({Key? key, required this.title}) : super(key: key);
 
-  final String title;
+class ScanScreen extends StatefulWidget{
 
   @override
-  State<Scanscreen> createState() => _ScanScreenState();
+  State<ScanScreen> createState() => _ScanScreenState();
 }
 
-// ignore: must_be_immutable
-class ScanScreen extends GetWidget<ScanController> {
+class _ScanScreenState extends State<ScanScreen> {
+
   File? image;
 
   Future pickImage() async {
-    try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+  
+    final image = await ImagePicker().pickImage(source: ImageSource.camera);
+    if (image == null) return;
 
-      if (image == null) return;
-
-      final imageTemp = File(image.path);
-
-      setState(() => this.image = imageTemp);
-    } on PlatformException catch (e) {
-      print('Failed to pick image: $e');
-    }
-  }
-
-  Future pickImageC() async {
-    try {
-      final image = await ImagePicker().pickImage(source: ImageSource.camera);
-
-      if (image == null) return;
-
-      final imageTemp = File(image.path);
-
-      setState(() => this.image = imageTemp);
-    } on PlatformException catch (e) {
-      print('Failed to pick image: $e');
-    }
+    final imageTemporary = File(image.path);
+    setState(() 
+    => this.image = imageTemporary);
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
-            backgroundColor: ColorConstant.whiteA700,
+      child: Scaffold(
+         backgroundColor: ColorConstant.whiteA700,
             body: Container(
                 width: size.width,
                 child: SingleChildScrollView(
                     child: Container(
                         decoration:
-                            BoxDecoration(color: ColorConstant.whiteA700),
+                        BoxDecoration(color: ColorConstant.whiteA700),
                         child: Column(
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              image != null
-                                  ? Image.file(image!)
-                                  : Text("No image selected"),
                               Container(
                                   width: double.infinity,
                                   margin: EdgeInsets.only(
@@ -78,18 +54,18 @@ class ScanScreen extends GetWidget<ScanController> {
                                   child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                      CrossAxisAlignment.center,
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
                                         Padding(
                                             padding: EdgeInsets.only(
                                                 left: getHorizontalSize(5.00),
                                                 top: getVerticalSize(50.00)),
-                                            child: Image.asset(
-                                                ImageConstant.imgRabbitdflt,
+                                            child: image != null ? Image.file(image!) :Image.asset(
+                                                ImageConstant.imgRabbitdflt1,
                                                 height: getVerticalSize(236.00),
                                                 width:
-                                                    getHorizontalSize(320.00),
+                                                getHorizontalSize(320.00),
                                                 fit: BoxFit.fill)),
                                         GestureDetector(
                                             onTap: () {
@@ -103,11 +79,11 @@ class ScanScreen extends GetWidget<ScanController> {
                                                     right: getHorizontalSize(
                                                         10.00),
                                                     bottom:
-                                                        getVerticalSize(27.29)),
+                                                    getVerticalSize(27.29)),
                                                 child: Image.asset(
                                                     ImageConstant.imgCameraicon,
                                                     height:
-                                                        getVerticalSize(77.71),
+                                                    getVerticalSize(77.71),
                                                     width: getHorizontalSize(
                                                         82.93),
                                                     fit: BoxFit.fill)))
@@ -126,28 +102,15 @@ class ScanScreen extends GetWidget<ScanController> {
                                           alignment: Alignment.center,
                                           height: getVerticalSize(40.60),
                                           width: getHorizontalSize(267.48),
-                                          decoration: BoxDecoration(
-                                              color: ColorConstant.amber400,
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                      getHorizontalSize(20.30)),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                    color: ColorConstant
-                                                        .black9003f,
-                                                    spreadRadius:
-                                                        getHorizontalSize(2.00),
-                                                    blurRadius:
-                                                        getHorizontalSize(2.00),
-                                                    offset: Offset(6, 6))
-                                              ]),
+                                          decoration: AppDecoration
+                                              .textstylemontserratromanmedium20,
                                           child: Text("lbl_next".tr,
                                               textAlign: TextAlign.center,
                                               style: AppStyle
-                                                  .textstylemontserratromanmedium201
+                                                  .textstylemontserratromanmedium20
                                                   .copyWith(
-                                                      fontSize: getFontSize(20),
-                                                      letterSpacing: 1.20)))))
+                                                  fontSize: getFontSize(20),
+                                                  letterSpacing: 1.20)))))
                             ]))))));
   }
 
